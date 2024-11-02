@@ -14,6 +14,6 @@
 .cxx
 local.properties
 .idea
-gradle
+gradle/wrapper
 gradlew*
 
