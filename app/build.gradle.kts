@@ -1,8 +1,9 @@
-plugins {
+ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+//    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
+    alias(libs.plugins.serialization)
+//    id("kotlinx-serialization")
 }
 
 android {
@@ -42,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.12"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -54,13 +55,13 @@ android {
 dependencies {
 
 //    ktor
-    implementation(platform("io.ktor:ktor-bom:3.0.0"))
-    implementation("io.ktor:ktor-client-android")
-    implementation("io.ktor:ktor-client-serialization")
-    implementation("io.ktor:ktor-client-logging")
-    implementation("io.ktor:ktor-client-content-negotiation")
-    implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("io.ktor:ktor-client-core:2.3.4")
+    implementation(platform("io.ktor:ktor-bom:2.3.9"))
+    implementation("io.ktor:ktor-client-android:2.3.9")
+    implementation("io.ktor:ktor-client-serialization:2.3.9")
+    implementation("io.ktor:ktor-client-logging:2.3.9")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.9")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.9")
+    implementation("io.ktor:ktor-client-core:2.3.9")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

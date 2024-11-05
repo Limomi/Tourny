@@ -1,5 +1,6 @@
 package com.example.tourny.ui.theme.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,6 +45,7 @@ fun TournamentsScreen(){
             try {
                 val response = apiRepository.getTournaments()
                 tournaments = response
+//                tournaments = apiRepository.getTournaments()
             } catch (e: Exception){
                 errorMessage = "Error loading tournaments ${e.message}"
             } finally {
@@ -75,6 +77,7 @@ fun TournamentsScreen(){
                 color = Color.Red,
                 modifier = Modifier.padding(8.dp)
             )
+            Log.e("e", message)
         }
 
         LazyColumn(
