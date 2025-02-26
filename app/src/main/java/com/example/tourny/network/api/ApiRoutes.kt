@@ -1,7 +1,7 @@
 package com.example.tourny.network.api
 
 object ApiRoutes {
-    private const val BASE_URL: String = "https://tourny-830e9-default-rtdb.firebaseio.com"
+    private const val BASE_URL: String = ""
     var SEARCH_TOURNAMENT = "$BASE_URL/tournament.json"
     var SINGLE_TOURNAMENT = "$BASE_URL/tournament/"
     var SEARCH_USER = "$BASE_URL/user.json"
