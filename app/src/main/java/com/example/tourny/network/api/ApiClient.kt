@@ -45,6 +45,5 @@ object ApiClient {
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             accept(ContentType.Application.Json)
         }
-
     }
 }

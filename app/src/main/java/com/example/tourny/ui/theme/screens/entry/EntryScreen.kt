@@ -1,6 +1,5 @@
-package com.example.tourny.ui.theme.screens
+package com.example.tourny.ui.theme.screens.entry
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,22 +28,39 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.tourny.models.Tournament
-import com.example.tourny.models.User
-import com.example.tourny.network.api.ApiRepository
+import com.example.tourny.ui.theme.TournyGray
+import com.example.tourny.ui.theme.TournyPurple
+import kotlinx.coroutines.launch
 
 @Composable
 fun EntryScreen(navController: NavHostController){
     var login by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    var users by remember { mutableStateOf<List<User>>(emptyList()) }
+//    var users by remember { mutableStateOf<List<User>>(emptyList()) }
     val scope = rememberCoroutineScope()
-    val apiRepository = ApiRepository()
+    val entryViewModel: EntryViewModel = viewModel()
+//    val apiRepository = ApiRepository()
     
-    var loggingIssue by remember { mutableStateOf(" ") }
-    Box(modifier = Modifier
+    var loggingIssue by remember { mutableStateOf("") }
+
+//  Спросить штуку
+
+//    fun EnterLog()
+//    {
+//        scope.launch {
+//            if (entryViewModel.EnterLogUser()){
+//                navController.navigate(route = "Tournaments")
+//            }
+//        }
+//    }
+
+//    EnterLog()
+
+    Box(
+        modifier = Modifier
         .fillMaxSize()
         .padding(12.dp),
     contentAlignment = Alignment.Center
@@ -113,8 +129,8 @@ fun EntryScreen(navController: NavHostController){
                     unfocusedLabelColor =  Color.Black,
                     focusedContainerColor = Color.White,
                     focusedTextColor = Color(0xff222222),
-                    focusedBorderColor = Color(red = 72, green = 27, blue = 194),
-                    focusedLabelColor =  Color(red = 72, green = 27, blue = 194)
+                    focusedBorderColor = TournyPurple,
+                    focusedLabelColor =  TournyPurple
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
 //                isError = login.isEmpty(),
@@ -122,13 +138,25 @@ fun EntryScreen(navController: NavHostController){
 
             Spacer(modifier = Modifier.padding(6.dp))
 
-            Text(text = loggingIssue)
+            Text(
+                text = loggingIssue,
+                fontSize = 20.sp,
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.Red
+            )
 
             Spacer(modifier = Modifier.padding(6.dp))
 
             Button(
-                onClick = { Logging() },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(red = 72, green = 27, blue = 194)),
+                onClick = {
+                    scope.launch {
+                        loggingIssue = entryViewModel.LoggingInAccount(login, password)
+                        if (loggingIssue.isNullOrEmpty()){
+                            navController.navigate(route = "Tournaments")
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = TournyPurple),
                 modifier = Modifier.size(270.dp, 60.dp)
 
             ) {
@@ -141,14 +169,15 @@ fun EntryScreen(navController: NavHostController){
             Spacer(modifier = Modifier.padding(8.dp))
 
             Button(
-                onClick = { navController.navigate(route = "Tournaments") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(red = 64, green = 64, blue = 64)),
+                onClick = { navController.navigate(route = "Registreted") },
+                colors = ButtonDefaults.buttonColors(containerColor = TournyGray),
                 modifier = Modifier.size(270.dp, 60.dp)
 
             ) {
                 Text(
                     text = "Зарегистрироваться",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
 
@@ -157,5 +186,3 @@ fun EntryScreen(navController: NavHostController){
     }
 }
 
-private fun Logging(){
-}
