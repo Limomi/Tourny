@@ -17,6 +17,7 @@ import androidx.compose.material.icons.sharp.List
 import androidx.compose.material.icons.sharp.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,8 +55,7 @@ fun CreateLeagueScreen(navController: NavController){
     var errorMessage: String? by remember { mutableStateOf<String?>(null) }
     var nameLeague: String by remember { mutableStateOf<String>("") }
     var basicScore: String by remember { mutableStateOf<String>("") }
-    var typeLeague: String by remember { mutableStateOf<String>("Выбрать тип лиги") }
-    var seeTypeLeague: Boolean by remember { mutableStateOf<Boolean>(false) }
+    var typeLeague: String by remember { mutableStateOf<String>("ELO") }
     var idLeague: String by remember { mutableStateOf<String>("") }
 
     Scaffold (
@@ -101,55 +102,115 @@ fun CreateLeagueScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
-                Button(
-                    onClick = { seeTypeLeague = !seeTypeLeague },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Black
-                    )
-                ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
                     Text(
-                        text = typeLeague,
-                        fontSize = 30.sp,
+                        text = "Тип лиги",
+                        fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.labelMedium,
-                        color = Color.Black
+                        color = Color.Black,
+                        lineHeight = 22.sp,
+                        textAlign = TextAlign.Center
                     )
-                }
 
-                Box(
-                    modifier = Modifier.width(200.dp)
-                ) {
-                    DropdownMenu(
-                        expanded = seeTypeLeague,
-                        onDismissRequest = { seeTypeLeague = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "ELO",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            },
-                            onClick = { typeLeague = "Elo" }
+                    Spacer(modifier = Modifier.padding(6.dp))
+
+                    Row (
+                        modifier = Modifier
+                            .background(Color.White)
+                            .fillMaxWidth()
+                            .padding(6.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Checkbox(
+                            checked = (typeLeague == "ELO"),
+                            onCheckedChange = {typeLeague = "ELO"}
                         )
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = "MagicPoint",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            },
-                            onClick = { typeLeague = "MagicPoint" }
+                        Text(
+                            text = "ELO",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color.Black
                         )
                     }
 
+                    Spacer(modifier = Modifier.padding(6.dp))
+
+                    Row (
+                        modifier = Modifier
+                            .background(Color.White)
+                            .fillMaxWidth()
+                            .padding(6.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Checkbox(
+                            checked = (typeLeague == "MagicPoint"),
+                            onCheckedChange = {typeLeague = "MagicPoint"}
+                        )
+
+                        Text(
+                            text = "MagicPoint",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color.Black
+                        )
+                    }
                 }
+
+//                Button(
+//                    onClick = { seeTypeLeague = !seeTypeLeague },
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = Color.White,
+//                        contentColor = Color.Black
+//                    )
+//                ) {
+//                    Text(
+//                        text = typeLeague,
+//                        fontSize = 30.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        style = MaterialTheme.typography.labelMedium,
+//                        color = Color.Black
+//                    )
+//                }
+//
+//                Box(
+//                    modifier = Modifier.width(200.dp)
+//                ) {
+//                    DropdownMenu(
+//                        expanded = seeTypeLeague,
+//                        onDismissRequest = { seeTypeLeague = false }
+//                    ) {
+//                        DropdownMenuItem(
+//                            text = {
+//                                Text(
+//                                    text = "ELO",
+//                                    fontSize = 20.sp,
+//                                    fontWeight = FontWeight.Bold,
+//                                    style = MaterialTheme.typography.labelMedium
+//                                )
+//                            },
+//                            onClick = { typeLeague = "Elo" }
+//                        )
+//
+//                        DropdownMenuItem(
+//                            text = {
+//                                Text(
+//                                    text = "MagicPoint",
+//                                    fontSize = 20.sp,
+//                                    fontWeight = FontWeight.Bold,
+//                                    style = MaterialTheme.typography.labelMedium
+//                                )
+//                            },
+//                            onClick = { typeLeague = "MagicPoint" }
+//                        )
+//                    }
+//
+//                }
                 
                 Spacer(modifier = Modifier.padding(12.dp))
 

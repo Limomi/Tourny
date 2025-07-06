@@ -112,7 +112,7 @@ fun JoinScreen(navController: NavController){
 
                 
                 TournyButton(
-                    text = "Присойдениться"
+                    text = "Присоединиться"
                 ) {
                     if(tournamentCode != ""){
                         score.launch {

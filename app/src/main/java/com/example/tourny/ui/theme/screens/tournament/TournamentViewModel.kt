@@ -284,7 +284,7 @@ class TournamentViewModel: ViewModel() {
                 }
             }
             "Лучший со средним"->{
-                var secondUserId: Int = (usersInTournament.size / 2) + 1
+                var secondUserId: Int = (usersInTournament.size / 2)
                 while (usersInTournament.size>0){
                     paringsInTour.add(Paring(paringId, numberInTour, tours.size, usersInTournament[0].userId, usersInTournament[secondUserId].userId, 0, 0, false))
                     numberInTour++

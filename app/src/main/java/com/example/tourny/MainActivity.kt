@@ -1,6 +1,8 @@
 package com.example.tourny
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tourny.models.Tournament
+import com.example.tourny.network.RegistretedUser
 import com.example.tourny.ui.theme.TournyTheme
 import com.example.tourny.ui.theme.screens.acceptJoinTournament.AcceptJoinTournamentScreen
 import com.example.tourny.ui.theme.screens.allLeague.AllLeagueScreen
@@ -32,23 +35,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TournyTheme {
+                val sharedPreference =  getSharedPreferences("preferUserId", Context.MODE_PRIVATE)
+                var fisrtScreen: String
+                if (sharedPreference.getString("userId", "000").toString() == "000"){
+                    fisrtScreen = "Entry"
+                }
+                else{
+                    fisrtScreen = "Tournaments"
+                }
+//                val editor = sharedPreference.edit()
+//                editor.putString("userId", "000")
+//                editor.commit()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TournyApp()
+                    TournyApp(fisrtScreen)
                 }
             }
         }
     }
+
+
+    override fun onPause() {
+        super.onPause()
+
+        val sharedPreference =  getSharedPreferences("preferUserId", Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putString("userId", RegistretedUser.id)
+        editor.commit()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val sharedPreference =  getSharedPreferences("preferUserId", Context.MODE_PRIVATE)
+        RegistretedUser.id = sharedPreference.getString("userId", "000").toString()
+        Log.e("1221", sharedPreference.getString("userId", "000").toString())
+    }
 }
 
 @Composable
-private fun TournyApp(){
+private fun TournyApp(firstsCreen: String){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "Entry") {
+    NavHost(navController = navController, startDestination = firstsCreen) {
         composable(route = "Tournaments"){
             AllTournamentsScreen(navController = navController)
         }

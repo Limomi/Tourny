@@ -1,11 +1,14 @@
 package com.example.tourny.ui.theme.screens.profile
 
+import android.content.ClipData.Item
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -101,148 +105,179 @@ fun ProfileScreen(navController: NavController, userId: String?){
         },
 
         content = {
-            Column (
-                modifier = Modifier.padding(it)
+            LazyColumn (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Text(
-                    modifier = Modifier.padding(6.dp),
-                    text = userInfo.id,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.labelMedium
-                )
-
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    modifier = Modifier.padding(6.dp),
-                    text = if(!userInfo.patronymic.isNullOrEmpty()){userInfo.lastname + " " + userInfo.firstname[0] + ". " + userInfo.patronymic!![0] + "."}else{userInfo.firstname + " " + userInfo.lastname},
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.labelMedium
-                )
-
-                errorMessage?.let { message ->
+                item {
                     Text(
-                        text = message,
-                        color = Color.Red,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                    Log.e("e", message)
-                }
-
-                Spacer(modifier = Modifier.padding(12.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Лиги игрока",
+                        modifier = Modifier.padding(6.dp),
+                        text = userInfo.id,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.labelMedium
                     )
 
-                    Button(
-                        onClick = {
-                            seeLeagues = !seeLeagues
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White,
-                            contentColor = TournyGray
+                    Spacer(modifier = Modifier.padding(8.dp))
+                }
+
+                item{
+                    Text(
+                        modifier = Modifier.padding(6.dp),
+                        text = if(!userInfo.patronymic.isNullOrEmpty()){userInfo.lastname + " " + userInfo.firstname[0] + ". " + userInfo.patronymic!![0] + "."}else{userInfo.firstname + " " + userInfo.lastname},
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+
+                item {
+                    errorMessage?.let { message ->
+                        Text(
+                            text = message,
+                            color = Color.Red,
+                            modifier = Modifier.padding(8.dp)
                         )
-                    ) {
-                        Icon(
-                            imageVector =if(seeLeagues){
-                                Icons.Sharp.KeyboardArrowUp}else{
-                                Icons.Sharp.Add} ,
-                            contentDescription = ""
-                        )
+                        Log.e("e", message)
                     }
 
+                    Spacer(modifier = Modifier.padding(12.dp))
                 }
 
-                Spacer(modifier = Modifier
-                    .padding(2.dp)
-                )
-                Row (
-                    modifier = Modifier
-                        .height(3.dp)
-                        .fillMaxWidth()
-                        .background(TournyGray)
-                ){
+                item {
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Лиги игрока",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+
+                        Button(
+                            onClick = {
+                                seeLeagues = !seeLeagues
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White,
+                                contentColor = TournyGray
+                            )
+                        ) {
+                            Icon(
+                                imageVector =if(seeLeagues){
+                                    Icons.Sharp.KeyboardArrowUp}else{
+                                    Icons.Sharp.Add} ,
+                                contentDescription = ""
+                            )
+                        }
+
+                    }
+
+                    Spacer(modifier = Modifier
+                        .padding(2.dp)
+                    )
+                    Row (
+                        modifier = Modifier
+                            .height(3.dp)
+                            .fillMaxWidth()
+                            .background(TournyGray)
+                    ){
+
+                    }
+                    Spacer(modifier = Modifier.padding(4.dp))
                 }
-                Spacer(modifier = Modifier.padding(4.dp))
+
+
 
                 if(seeLeagues){
-                    LazyColumn(
+                    items(leagueWithScore){league ->
+                        TournyLeagueWithScoreCard(league, navController)
+                    }
+                }
+
+                item {
+
+                    Row(
                         modifier = Modifier
-                            .padding(6.dp)
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        items(leagueWithScore){league ->
-                            TournyLeagueWithScoreCard(league)
+                        Text(
+                            text = "Турниры игрока",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+
+                        Button(
+                            onClick = {
+                                seeTournaments = !seeTournaments
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White,
+                                contentColor = TournyGray
+                            )
+                        ) {
+                            Icon(
+                                imageVector =if(seeTournaments){
+                                    Icons.Sharp.KeyboardArrowUp}else{
+                                    Icons.Sharp.Add} ,
+                                contentDescription = ""
+                            )
                         }
+
                     }
-                }
 
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Турниры игрока",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.labelMedium
+                    Spacer(modifier = Modifier
+                        .padding(2.dp)
                     )
+                    Row (
+                        modifier = Modifier
+                            .height(3.dp)
+                            .fillMaxWidth()
+                            .background(TournyGray)
+                    ){
 
-                    Button(
-                        onClick = {
-                            seeTournaments = !seeTournaments
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White,
-                            contentColor = TournyGray
-                        )
-                    ) {
-                        Icon(
-                            imageVector =if(seeTournaments){
-                                Icons.Sharp.KeyboardArrowUp}else{
-                                Icons.Sharp.Add} ,
-                            contentDescription = ""
-                        )
                     }
-
+                    Spacer(modifier = Modifier.padding(4.dp))
                 }
-
-                Spacer(modifier = Modifier
-                    .padding(2.dp)
-                )
-                Row (
-                    modifier = Modifier
-                        .height(3.dp)
-                        .fillMaxWidth()
-                        .background(TournyGray)
-                ){
-
-                }
-                Spacer(modifier = Modifier.padding(4.dp))
 
                 if(seeTournaments){
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(6.dp)
-                    ) {
-                        items(tournaments){tournament ->
-                            TournyTournamentCard(tournament = tournament, {navController.navigate("Tournaments/${tournament.id}")})
+                    items(tournaments){tournament ->
+                        TournyTournamentCard(tournament = tournament, {navController.navigate("Tournaments/${tournament.id}")})
+                    }
+                }
+
+                if (userId == RegistretedUser.id){
+                    item {
+                        Spacer(modifier = Modifier.padding(12.dp))
+
+                        Button(
+                            onClick = {
+                                RegistretedUser.id = "000"
+                                navController.navigate("Entry")
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White,
+                                contentColor = Color.Black
+                            ),
+                            border = BorderStroke(4.dp, Color.Red)
+                        ) {
+                            Text(
+                                text = "Выйти из аккаунта",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = Color.Black
+                            )
                         }
                     }
                 }

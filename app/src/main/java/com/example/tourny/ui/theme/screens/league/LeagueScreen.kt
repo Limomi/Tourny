@@ -259,7 +259,7 @@ fun LeagueScreen(navController: NavController, leagueId: String?){
                 
                 if(seeUsers){
                     items(usersWithScore){user ->
-                        TournyUserWithScoreCard(userWithScore = user)
+                        TournyUserWithScoreCard(userWithScore = user, navController)
                     }
                 }
             }

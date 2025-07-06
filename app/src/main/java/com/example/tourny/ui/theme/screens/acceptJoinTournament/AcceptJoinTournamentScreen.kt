@@ -201,7 +201,7 @@ fun AcceptJoinTournamentScreen(navController: NavController, tournamentId: Strin
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
             TournyButton(
-                text = "Присойдениться"
+                text = "Присоединиться"
             ) {
                 scope.launch {
                     try {

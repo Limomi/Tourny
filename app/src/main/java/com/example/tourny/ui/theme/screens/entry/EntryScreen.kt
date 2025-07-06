@@ -1,5 +1,6 @@
 package com.example.tourny.ui.theme.screens.entry
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,8 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -25,19 +33,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.tourny.R
 import com.example.tourny.ui.theme.TournyGray
 import com.example.tourny.ui.theme.TournyPurple
 import kotlinx.coroutines.launch
+import java.io.File
 
 @Composable
 fun EntryScreen(navController: NavHostController){
     var login by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var password:String by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
 //    var users by remember { mutableStateOf<List<User>>(emptyList()) }
     val scope = rememberCoroutineScope()
@@ -61,8 +74,8 @@ fun EntryScreen(navController: NavHostController){
 
     Box(
         modifier = Modifier
-        .fillMaxSize()
-        .padding(12.dp),
+            .fillMaxSize()
+            .padding(12.dp),
     contentAlignment = Alignment.Center
     ){
         Column(
@@ -132,7 +145,29 @@ fun EntryScreen(navController: NavHostController){
                     focusedBorderColor = TournyPurple,
                     focusedLabelColor =  TournyPurple
                 ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = if(passwordVisible)
+                {
+                    VisualTransformation.None
+                }else
+                {
+                    PasswordVisualTransformation()
+                },
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = if(passwordVisible) {
+                            Icons.Filled.Visibility
+                        }
+                        else
+                        {
+//                            Icons.Filled.VisibilityOff
+                        Icons.Filled.VisibilityOff
+                        },
+                            contentDescription = "")
+
+                    }
+                }
+
 //                isError = login.isEmpty(),
             )
 
@@ -182,6 +217,7 @@ fun EntryScreen(navController: NavHostController){
             }
 
             Spacer(modifier = Modifier.padding(10.dp))
+
         }
     }
 }

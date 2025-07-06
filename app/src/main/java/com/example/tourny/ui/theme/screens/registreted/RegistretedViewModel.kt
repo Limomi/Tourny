@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.tourny.models.User
 import com.example.tourny.network.RegistretedUser
 import com.example.tourny.network.api.ApiRepository
+import java.io.File
 
 class RegistretedViewModel: ViewModel() {
 
@@ -33,6 +34,7 @@ class RegistretedViewModel: ViewModel() {
                 RegistretedUser.firstname = firstname
                 RegistretedUser.patronymic = patronymic
                 RegistretedUser.password = firstPassword
+
                 Log.e("error", id_user)
                 return ""
             }

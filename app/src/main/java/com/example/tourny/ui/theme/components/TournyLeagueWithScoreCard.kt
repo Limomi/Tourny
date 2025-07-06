@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.tourny.models.onlyApp.LeagueWithScore
 import com.example.tourny.ui.theme.TournyPurple
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TournyLeagueWithScoreCard(leagueWithScore: LeagueWithScore){
+fun TournyLeagueWithScoreCard(leagueWithScore: LeagueWithScore, navController: NavController){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,6 +34,7 @@ fun TournyLeagueWithScoreCard(leagueWithScore: LeagueWithScore){
             .border(2.dp, TournyPurple, shape = RoundedCornerShape(6.dp))
             .background(Color.White),
         elevation = CardDefaults.cardElevation(8.dp),
+        onClick = {navController.navigate("Leagues/" + leagueWithScore.leagueId)}
     ) {
         Row(
             modifier = Modifier

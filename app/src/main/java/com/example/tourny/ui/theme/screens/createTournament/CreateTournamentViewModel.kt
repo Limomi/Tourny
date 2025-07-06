@@ -32,7 +32,7 @@ class CreateTournamentViewModel:ViewModel() {
         val apiRepository = ApiRepository()
 
         val tournaments: List<Tournament> = apiRepository.getTournaments()
-        val creatyTournament: Tournament = Tournament(RegistretedUser.id, tournaments.size, tournamentName, tournamentName[0] + "w" + "3" + tournamentName[1], tournamentTourCount, false, tournamentTypeParings)
+        val creatyTournament: Tournament = Tournament(RegistretedUser.id, tournaments.size, tournamentName, tournamentName[0] + "w" + tournaments.size.toString() + tournamentName[1], tournamentTourCount, false, tournamentTypeParings)
 
         apiRepository.putTournament(creatyTournament)
 

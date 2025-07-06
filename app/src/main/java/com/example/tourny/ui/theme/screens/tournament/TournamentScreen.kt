@@ -15,7 +15,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material.icons.sharp.Home
+import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material.icons.sharp.List
+import androidx.compose.material.icons.sharp.Refresh
+import androidx.compose.material.icons.sharp.Search
 import androidx.compose.material.icons.sharp.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -105,6 +108,21 @@ fun TournamentScreen(navController: NavController, tournamentId: String?){
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.White
                 )
+
+                Button(
+                    modifier = Modifier.padding(6.dp),
+                    onClick = { loadTournament() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = TournyPurple,
+                        contentColor = Color.White
+                    )
+
+                ) {
+                    Icon(
+                        imageVector =Icons.Sharp.Refresh,
+                        contentDescription = ""
+                    )
+                }
             }
         },
 
@@ -363,7 +381,7 @@ private fun UserInTournamentTableElement(user: UserWithScore, navController: Nav
             containerColor = Color.White,
             contentColor = Color.Black,
         ),
-        onClick = { navController.navigate("profile/${adminId}") },
+        onClick = { navController.navigate("profile/${user.id}") },
     ) {
         Row(
             modifier = Modifier

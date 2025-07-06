@@ -3,6 +3,7 @@ package com.example.tourny.ui.theme.screens.allTournaments
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -65,6 +66,9 @@ fun AllTournamentsScreen(navController: NavHostController){
 
     val scope = rememberCoroutineScope()
     val apiRepository = ApiRepository()
+
+//    var refresh by remember { mutableStateOf<Boolean>(false) }
+//    val ptrState = rememberPullRefreshState(refresh, {loadTournaments()})
 
     fun loadTournaments() {
 //        showLoading = true
@@ -185,6 +189,11 @@ fun AllTournamentsScreen(navController: NavHostController){
         },
 
         content = {
+//            Box(
+//                modifier = Modifier.pullRefresh()
+//            ) {
+//
+//            }
             LazyColumn (
                 modifier = Modifier
                     .fillMaxSize()
@@ -238,7 +247,7 @@ fun AllTournamentsScreen(navController: NavHostController){
                         modifier = Modifier
                             .padding(top = 16.dp)
                     ) {
-                        Text(text = "Reload")
+                        Text(text = "Перезагрузить")
                     }
                 }
             }

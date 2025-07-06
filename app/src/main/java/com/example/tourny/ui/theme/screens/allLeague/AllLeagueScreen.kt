@@ -133,56 +133,52 @@ fun AllLeagueScreen(navController: NavController){
         },
         
         content = {
-            Column (
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(6.dp)
-                ) {
-                    item{
-                        Spacer(modifier = Modifier.padding(10.dp))
-
+                item{
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Text(
+                        text = "Не нашли свою лигу? Может вы её ещё не создали?",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.labelMedium,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 26.sp
+                    )
+                    Spacer(modifier = Modifier.padding(4.dp))
+                    TournyButton(text = "Создать", ) {
+                        navController.navigate("League/Create")
+                    }
+                    Spacer(modifier = Modifier.padding(6.dp))
+                    errorMessage?.let {message ->
                         Text(
-                            text = "Не нашли свою лигу? Может вы её ещё не создали?",
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.labelMedium,
-                            textAlign = TextAlign.Center,
-                            lineHeight = 26.sp
+                            text = message,
+                            color = Color.Red,
+                            modifier = Modifier.padding(8.dp)
                         )
-
-                        Spacer(modifier = Modifier.padding(4.dp))
-
-                        TournyButton(text = "Создать", ) {
-                            navController.navigate("League/Create")
-                        }
-
-                        Spacer(modifier = Modifier.padding(6.dp))
-
-                        errorMessage?.let {message ->
-                            Text(
-                                text = message,
-                                color = Color.Red,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                            Log.e("e", message)
+                        Log.e("e", message)
+                    }
+                }
+                items(leagues){league->
+                    if (league.name.contains(searchString, true)){
+                        TournyLeagueCard(
+                            league = league
+                        ) {
+                            navController.navigate("Leagues/${league.leagueId}")
                         }
                     }
+                }
 
-                    items(leagues){league->
-                        if (league.name.contains(searchString, true)){
-                            TournyLeagueCard(
-                                league = league
-                            ) {
-                                navController.navigate("Leagues/${league.leagueId}")
-                            }
-                        }
+                item {
+                    Button(onClick = { loadLeagues() },
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                    ) {
+                        Text(text = "Перезагрузить")
                     }
                 }
             }
